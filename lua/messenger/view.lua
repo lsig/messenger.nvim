@@ -1,7 +1,9 @@
 local util = require("messenger.util")
+local config = require("messenger.config")
 local M = {}
 
 function M.create_window(content)
+  local opts = config.options
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, true, content)
 
@@ -25,7 +27,7 @@ function M.create_window(content)
     height = height,
     row = 1,
     col = 1,
-    border = "none",
+    border = opts.window.border,
   }
 
   local win_id = vim.api.nvim_open_win(buf, false, win_config)
