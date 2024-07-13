@@ -1,3 +1,4 @@
+local util = require("messenger.util")
 local M = {}
 
 function M.create_window(content)
@@ -24,8 +25,7 @@ function M.create_window(content)
     height = height,
     row = 1,
     col = 1,
-    border = "single",
-    zindex = 100,
+    border = "none",
   }
 
   local win_id = vim.api.nvim_open_win(buf, false, win_config)
@@ -43,6 +43,20 @@ function M.create_window(content)
       vim.api.nvim_win_close(win_id, true)
     end,
   })
+end
+
+function M.messenger()
+  local info, err = util.commit_info()
+
+  if err then
+    vim.notify(err, vim.log.levels.ERROR, {
+      title = string.format("Messenger.nvim"),
+    })
+    return
+  end
+
+  local content = util.format_content(info)
+  M.create_window(content)
 end
 
 return M
