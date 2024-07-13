@@ -32,6 +32,7 @@ local function notify_commit_message()
     vim.notify(err, vim.log.levels.ERROR, {
       title = string.format("Messenger.nvim"),
     })
+    return
   end
 
   -- Prepare the notification message
@@ -51,24 +52,10 @@ local function show_commit_info_popup()
     vim.notify(err, vim.log.levels.ERROR, {
       title = string.format("Messenger.nvim"),
     })
+    return
   end
 
-  -- Split commit message into lines
-  local msg_lines = vim.split(info.commit_msg, "\n")
-
-  -- Prepare the content for the floating window
-  local content = {
-    string.format("Commit: %s", info.commit_hash),
-    string.format("Author: %s %s", info.author, info.author_email),
-    "",
-  }
-
-  -- Append commit message lines
-  for _, line in ipairs(msg_lines) do
-    if line:match("%S") then -- Check if the line contains any non-whitespace characters
-      table.insert(content, line)
-    end
-  end
+  local content = util.format_content(info)
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, true, content)
