@@ -1,9 +1,27 @@
+local git = require("messenger.git")
 local M = {}
 
-function M.locate_gitdir()
-  local current_dir = vim.fn.getcwd()
-  local git_dir = vim.fn.finddir(".git", current_dir .. ";")
-  return git_dir ~= "" and vim.fn.fnamemodify(git_dir, ":p:h:h") or nil
+function M.commit_info()
+  local gitdir = git.locate_gitdir()
+  if not gitdir then
+    return nil, "Not a git repository"
+  end
+
+  local info, err = git.blame_info(gitdir)
+  if err then
+    return nil, err
+  end
+
+  -- Get the commit message for the found commit hash
+  local message, err = git.commit_message(gitdir, info.commit_hash)
+
+  if err then
+    return nil, err
+  end
+
+  info.commit_msg = message
+
+  return info
 end
 
 function M.format_content(info)
