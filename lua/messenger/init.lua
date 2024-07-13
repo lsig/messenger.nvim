@@ -1,13 +1,8 @@
+local util = require("messenger.util")
 local M = {}
 
-local function locate_gitdir()
-  local current_dir = vim.fn.getcwd()
-  local git_dir = vim.fn.finddir(".git", current_dir .. ";")
-  return git_dir ~= "" and vim.fn.fnamemodify(git_dir, ":p:h:h") or nil
-end
-
 local function get_commit_info()
-  local gitdir = locate_gitdir()
+  local gitdir = util.locate_gitdir()
   if not gitdir then
     return "Not a git repository"
   end
@@ -131,7 +126,6 @@ local function setup()
 end
 
 M.setup = setup
-M.locate_gitdir = locate_gitdir
 M.print_commit_message = notify_commit_message
 M.show_commit_info_popup = show_commit_info_popup
 
