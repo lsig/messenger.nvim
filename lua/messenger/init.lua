@@ -68,20 +68,22 @@ local function show_commit_info_popup()
   local info = get_commit_info()
 
   -- Split the info into its components and trim each part
-  local hash, author, date, message = unpack(vim.tbl_map(vim.trim, vim.split(info, "|")))
+  local hash, author, _, message = unpack(vim.tbl_map(vim.trim, vim.split(info, "|")))
 
   -- Prepare the content for the floating window
   local content = {
     string.format("Commit: %s", hash),
     string.format("Author: %s", author),
-    string.format("Date: %s", date),
     "",
-    "Message",
     message,
   }
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, true, content)
+
+  -- Define highlighting groups for colors
+  vim.api.nvim_buf_add_highlight(buf, -1, "MessengerHeadings", 0, 0, 7)
+  vim.api.nvim_buf_add_highlight(buf, -1, "MessengerHeadings", 1, 0, 7)
 
   -- Adjust height and width based on content
   local width = 0
@@ -121,6 +123,9 @@ local function show_commit_info_popup()
 end
 
 local function setup()
+  -- Define custom highlight groups
+  vim.cmd("highlight MessengerHeadings guifg=#89b4fa")
+
   vim.api.nvim_create_user_command("MessengerPrint", notify_commit_message, {})
   vim.api.nvim_create_user_command("MessengerPopup", show_commit_info_popup, {})
 end
