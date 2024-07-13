@@ -1,57 +1,42 @@
 local util = require("messenger.util")
+local git = require("messenger.git")
 local M = {}
 
-local function get_commit_info()
+local function commit_info()
   local gitdir = util.locate_gitdir()
   if not gitdir then
-    return "Not a git repository"
+    return nil, "Not a git repository"
   end
 
-  local file_path = vim.fn.expand("%:p")
-  local line_num = vim.api.nvim_win_get_cursor(0)[1]
-
-  -- Get the blame information for the current line
-  local blame_cmd = string.format("git -C %s blame -L %d,%d --porcelain %s", gitdir, line_num, line_num, file_path)
-  local blame_output = vim.fn.system(blame_cmd)
-
-  if vim.v.shell_error ~= 0 then
-    return "Error executing git blame: " .. blame_output
-  end
-
-  -- Extract the commit hash from the blame output
-  local commit_hash = blame_output:match("^(%x+)")
-  if not commit_hash then
-    return "Could not find commit hash for the current line"
+  local info, err = git.blame_info(gitdir)
+  if err then
+    return nil, err
   end
 
   -- Get the commit message for the found commit hash
-  local message_cmd = string.format("git -C %s show -s --format=%%B %s", gitdir, commit_hash)
-  local message = vim.fn.system(message_cmd)
+  local message, err = git.commit_message(gitdir, info.commit_hash)
 
-  if vim.v.shell_error ~= 0 then
-    return "Error getting commit message: " .. message
+  if err then
+    return nil, err
   end
 
-  local info_cmd =
-    string.format("git -C %s show -s --format='%%h | %%an | %%ad | %%s' --date=short %s", gitdir, commit_hash)
-  local info = vim.fn.system(info_cmd)
-
-  if vim.v.shell_error ~= 0 then
-    return "Error getting commit info: " .. info
-  end
+  info.commit_msg = message
 
   return info
 end
 
 local function notify_commit_message()
-  local info = get_commit_info()
+  local info, err = commit_info()
 
-  -- Split the info into its components
-  local hash, author, date, message = unpack(vim.tbl_map(vim.trim, vim.split(info, "|")))
+  if err then
+    vim.notify(err, vim.log.levels.ERROR, {
+      title = string.format("Messenger.nvim"),
+    })
+  end
 
   -- Prepare the notification message
   local notify_message =
-    string.format("Commit (%s)\n%s - %s %s", vim.trim(hash), vim.trim(message), vim.trim(author), vim.trim(date))
+    string.format("Commit (%s)\n%s - %s %s", info.commit_hash, info.commit_msg, info.author, info.date)
 
   -- Send the notification
   vim.notify(notify_message, vim.log.levels.INFO, {
@@ -60,18 +45,30 @@ local function notify_commit_message()
 end
 
 local function show_commit_info_popup()
-  local info = get_commit_info()
+  local info, err = commit_info()
 
-  -- Split the info into its components and trim each part
-  local hash, author, _, message = unpack(vim.tbl_map(vim.trim, vim.split(info, "|")))
+  if err then
+    vim.notify(err, vim.log.levels.ERROR, {
+      title = string.format("Messenger.nvim"),
+    })
+  end
+
+  -- Split commit message into lines
+  local msg_lines = vim.split(info.commit_msg, "\n")
 
   -- Prepare the content for the floating window
   local content = {
-    string.format("Commit: %s", hash),
-    string.format("Author: %s", author),
+    string.format("Commit: %s", info.commit_hash),
+    string.format("Author: %s %s", info.author, info.author_email),
     "",
-    message,
   }
+
+  -- Append commit message lines
+  for _, line in ipairs(msg_lines) do
+    if line:match("%S") then -- Check if the line contains any non-whitespace characters
+      table.insert(content, line)
+    end
+  end
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, true, content)
