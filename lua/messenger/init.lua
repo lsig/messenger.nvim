@@ -111,6 +111,13 @@ local function show_commit_info_popup()
 
   local win_hl = "FloatBorder:MessengerBorder,FloatTitle:MessengerTitle"
   vim.wo[win_id].winhighlight = win_hl
+
+  vim.api.nvim_create_autocmd("CursorMoved", {
+    once = true,
+    callback = function()
+      vim.api.nvim_win_close(win_id, true)
+    end,
+  })
 end
 
 local function setup()
