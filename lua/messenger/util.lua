@@ -31,7 +31,7 @@ function M.format_content(info)
   -- Prepare the content for the floating window
   local content = {
     string.format("Commit: %s", info.commit_hash),
-    string.format("Author: %s %s", info.author, info.author_email),
+    string.format("Author: %s %s %s", info.author, info.author_email, info.date),
     "",
   }
 
