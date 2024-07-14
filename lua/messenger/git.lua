@@ -34,7 +34,7 @@ function M.blame_info(gitdir)
   end
 
   -- Convert author_time to a readable format
-  local date = os.date("%Y-%m-%d", tonumber(author_time))
+  local date = os.date("%b %d %Y", tonumber(author_time))
   if not date then
     return nil, "Failed to convert author time to date"
   end

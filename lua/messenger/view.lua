@@ -10,6 +10,7 @@ function M.create_window(content)
   -- Define highlighting groups for colors
   vim.api.nvim_buf_add_highlight(buf, -1, "MessengerHeadings", 0, 0, 7)
   vim.api.nvim_buf_add_highlight(buf, -1, "MessengerHeadings", 1, 0, 7)
+  vim.api.nvim_buf_add_highlight(buf, -1, "MessengerHeadings", 2, 0, 5)
 
   -- Adjust height and width based on content
   local width = 0
