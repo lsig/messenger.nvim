@@ -37,9 +37,14 @@ function M.format_content(info)
 
   -- Append commit message lines
   for _, line in ipairs(msg_lines) do
-    if line:match("%S") then -- Check if the line contains any non-whitespace characters
-      table.insert(content, line)
-    end
+    table.insert(content, line)
+  end
+
+  -- Remove last line if it is only whitespace
+  local last_line = content[#content]
+
+  if last_line:match("^%s*$") then
+    table.remove(content)
   end
 
   return content
