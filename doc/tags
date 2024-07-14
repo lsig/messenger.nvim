@@ -1,0 +1,6 @@
+M.options	messenger.txt	/*M.options*
+Messenger	messenger.txt	/*Messenger*
+Messenger.nvim	messenger.txt	/*Messenger.nvim*
+Messenger.setup	messenger.txt	/*Messenger.setup*
+Messenger.show	messenger.txt	/*Messenger.show*
+defaults	messenger.txt	/*defaults*

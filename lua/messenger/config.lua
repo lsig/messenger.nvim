@@ -1,13 +1,24 @@
 local M = {}
 
+--- Configuration options for the Messenger.nvim plugin.
+---
 ---@class MessengerOptions
+---@field window table Configuration for the popup window.
+---@field window.border string Border style for the popup window. Valid values: "none", "single", "double", "rounded", "solid", "shadow".
+---@usage >lua
+---  local options = {
+---     window = {
+---       border = "none",
+---     },
+---  }
+--- <
 local defaults = {
   window = {
     border = "none",
   },
 }
 
----@class MessengerOptions
+---@type MessengerOptions
 M.options = nil
 
 function M.setup(options)

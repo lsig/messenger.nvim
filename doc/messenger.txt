@@ -1,1 +1,79 @@
-Messenger Documentation
+==============================================================================
+------------------------------------------------------------------------------
+                                                                     *Messenger*
+                                  `Messenger`
+*Messenger.nvim* Show the commit message under the cursor
+
+MIT License Copyright (c) 2024 lsig
+
+==============================================================================
+
+Features:
+- Show the most recent commit message under the cursor
+
+# Setup ~
+
+Setup with `require('messenger').setup({})` (replace `{}` with your
+`config` table) or require('messenger').setup() for the default coniguration.
+
+See |Messenger.options| for `options` structure and default values.
+
+------------------------------------------------------------------------------
+                                                               *Messenger.setup*
+                               `Messenger.setup`
+Module setup
+
+Parameters ~
+{options} `(MessengerOptions|nil)` Module config table. See |Messenger.options|.
+
+Usage ~
+>lua
+  require('messenger').setup() -- use default config
+  -- OR
+  require('messenger').setup({}) -- replace {} with your config table
+<
+------------------------------------------------------------------------------
+                                                                *Messenger.show*
+                                `Messenger.show`
+Retrieve and display commit information in a floating window
+
+This function uses `util.commit_info` to get the commit information and formats it using `util.format_content`.
+The formatted content is then displayed in a floating window using `create_window`.
+
+If there is an error retrieving the commit information, a notification is displayed.
+
+@usage
+  require('messenger').show()
+
+  -- OR
+
+  Use :MessengerShow in Neovim to call this function
+
+
+==============================================================================
+------------------------------------------------------------------------------
+                                                                      *defaults*
+                                   `defaults`
+Configuration options for the Messenger.nvim plugin.
+
+Class ~
+{MessengerOptions}
+Fields ~
+{window} `(table)` Configuration for the popup window.
+{window.border} `(string)` Border style for the popup window. Valid values: "none", "single", "double", "rounded", "solid", "shadow".
+Usage ~
+>lua
+ local options = {
+    window = {
+      border = "none",
+    },
+ }
+<
+------------------------------------------------------------------------------
+                                                                     *M.options*
+                                  `M.options`
+Type ~
+MessengerOptions
+
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
