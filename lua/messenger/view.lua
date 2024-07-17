@@ -40,11 +40,15 @@ function M.create_window(content)
   local win_hl = "FloatBorder:MessengerBorder,FloatTitle:MessengerTitle"
   vim.wo[win_id].winhighlight = win_hl
 
-  vim.api.nvim_create_autocmd("CursorMoved", {
-    once = true,
+  local augroup = vim.api.nvim_create_augroup("MessengerWindow" .. win_id, { clear = true })
+
+  vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+    group = augroup,
     callback = function()
       vim.api.nvim_win_close(win_id, true)
+      vim.api.nvim_del_augroup_by_id(augroup)
     end,
+    once = true,
   })
 end
 
