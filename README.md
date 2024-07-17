@@ -1,4 +1,4 @@
-# ✉️ Messenger
+# ✨Messenger
 
 Read the hidden commit message under your cursor, from the comfort of your favorite editor
 
