@@ -64,9 +64,8 @@ Fields ~
 Usage ~
 >lua
  local options = {
-    window = {
-      border = "none",
-    },
+    border = "none",
+    heading_hl = "#89b4fa"
  }
 <
 ------------------------------------------------------------------------------
