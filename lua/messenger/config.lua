@@ -7,15 +7,13 @@ local M = {}
 ---@field window.border string Border style for the popup window. Valid values: "none", "single", "double", "rounded", "solid", "shadow".
 ---@usage >lua
 ---  local options = {
----     window = {
----       border = "none",
----     },
+---     border = "none",
+---     heading_hl = "#89b4fa"
 ---  }
 --- <
 local defaults = {
-  window = {
-    border = "none",
-  },
+  border = "none",
+  heading_hl = "#89b4fa",
 }
 
 ---@type MessengerOptions
@@ -23,7 +21,7 @@ M.options = nil
 
 function M.setup(options)
   M.options = vim.tbl_deep_extend("force", {}, defaults, options or {})
-  vim.cmd("highlight MessengerHeadings guifg=#89b4fa")
+  vim.cmd("highlight MessengerHeadings guifg=" .. M.options.heading_hl)
 end
 
 return M

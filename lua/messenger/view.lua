@@ -28,7 +28,7 @@ function M.create_window(content)
     height = height,
     row = 1,
     col = 1,
-    border = opts.window.border,
+    border = opts.border,
   }
 
   local win_id = vim.api.nvim_open_win(buf, false, win_config)
