@@ -38,7 +38,7 @@ function M.format_content(info)
 
   -- Append commit message lines
   for _, line in ipairs(msg_lines) do
-    table.insert(content, line)
+    table.insert(content, vim.trim(line))
   end
 
   -- Remove last line if it is only whitespace
