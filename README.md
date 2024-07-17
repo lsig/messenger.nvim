@@ -2,7 +2,7 @@
 
 Read the hidden commit message under your cursor, from the comfort of your favorite editor
 
-https://github.com/user-attachments/assets/5fdc3450-6588-4ddd-823e-8bd06fcaaab1
+https://github.com/user-attachments/assets/d77020dd-5978-45dc-ad22-5f6c12170895
 
 ## 💬 Show the commit message under cursor in a pop-up window
 
