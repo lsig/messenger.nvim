@@ -12,7 +12,6 @@ function M.commit_info()
     return nil, err
   end
 
-  -- Get the commit message for the found commit hash
   local message, err = git.commit_message(gitdir, info.commit_hash)
 
   if err then
@@ -25,10 +24,7 @@ function M.commit_info()
 end
 
 function M.format_content(info)
-  -- Split commit message into lines
   local msg_lines = vim.split(info.commit_msg, "\n")
-
-  -- Prepare the content for the floating window
   local content = {
     string.format("Commit: %s", info.commit_hash),
     string.format("Author: %s %s", info.author, info.author_email),
