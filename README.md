@@ -46,7 +46,7 @@ Install the plugin with your preferred package manager:
 
 Toggle **Messenger** with `:MessengerShow`.
 
-Alternatively you can start **Messenger** with the `Lua` API and pass any additional options:
+Alternatively you can start **Messenger** with the `Lua` API
 
 ```lua
 require("messenger").show()
